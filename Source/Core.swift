@@ -2043,17 +2043,21 @@ extension FormViewController {
     
     //MARK: Navigation Methods
     
-    private enum Direction { case Up, Down }
+    public enum Direction { case Up, Down }
     
-    func navigationDone(sender: UIBarButtonItem) {
-        tableView?.endEditing(true)
+    private func navigationDone(sender: UIBarButtonItem) {
+        finishNavigation()
     }
     
-    func navigationAction(sender: UIBarButtonItem) {
+    private func navigationAction(sender: UIBarButtonItem) {
         navigateToDirection(sender == navigationAccessoryView.previousButton ? .Up : .Down)
     }
     
-    private func navigateToDirection(direction: Direction){
+    public func finishNavigation() {
+        tableView?.endEditing(true)
+    }
+    
+    public func navigateToDirection(direction: Direction){
         guard let currentCell = tableView?.findFirstResponder()?.formCell() else { return }
         guard let currentIndexPath = tableView?.indexPathForCell(currentCell) else { assertionFailure(); return }
         guard let nextRow = nextRowForRow(form[currentIndexPath], withDirection: direction) else { return }
@@ -2063,7 +2067,7 @@ extension FormViewController {
         }
     }
     
-    private func nextRowForRow(currentRow: BaseRow, withDirection direction: Direction) -> BaseRow? {
+    public func nextRowForRow(currentRow: BaseRow, withDirection direction: Direction) -> BaseRow? {
         
         let options = navigationOptions ?? Form.defaultNavigationOptions
         guard options.contains(.Enabled) else { return nil }

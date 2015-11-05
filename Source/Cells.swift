@@ -266,6 +266,17 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
             textField.text = row.displayValueFor?(row.value)
         }
     }
+    
+    public func textFieldShouldReturn(textField: UITextField) -> Bool {
+        if let _ = formViewController()?.nextRowForRow(self.row, withDirection: FormViewController.Direction.Down) {
+            formViewController()?.navigateToDirection(FormViewController.Direction.Down)
+        } else {
+            formViewController()?.finishNavigation()
+        }
+        
+        return true
+    }
+
 }
 
 public class TextCell : _FieldCell<String>, CellType {
